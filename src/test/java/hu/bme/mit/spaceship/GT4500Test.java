@@ -50,4 +50,29 @@ public class GT4500Test {
     verify(second, times(1)).fire(1);
   }
 
+   /*
+  Fire single while both torpedostores are empty, expected: false
+  Fire single while only one torpedostore has bullet (the one in order), expected: true
+  Fire single while only one torpedostore has bullet (the one that should rest), expected: true
+  Fire all while only one torpedostore has bullet, expected: false
+  Fire all while both torpedostores are empty, expected: false
+   */
+
+  @Test
+  public void fireTorpedo_single_empty() {
+    //Arrange
+    when(first.isEmpty()).thenReturn(true);
+    when(second.isEmpty()).thenReturn(true);
+    when(first.fire(1)).thenReturn(false);
+    when(second.fire(1)).thenReturn(false);
+
+    //Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+
+    //Verify
+    verify(first,times(0)).fire(1);
+    verify(second,times(0)).fire(1);
+  }
+
+
 }
