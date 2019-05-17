@@ -74,5 +74,70 @@ public class GT4500Test {
     verify(second,times(0)).fire(1);
   }
 
+  @Test
+  public void fireTorpedo_single_oneBullet_in_order() {
+    //Arrange
+    ship.setWasPrimaryFiredLast(false);
+    when(first.isEmpty()).thenReturn(false);
+    when(second.isEmpty()).thenReturn(true);
+    when(first.fire(1)).thenReturn(true);
+    when(second.fire(1)).thenReturn(false);
+
+    //Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+
+    //Verify
+    verify(first,times(1)).fire(1);
+    verify(second,times(0)).fire(1);
+  }
+
+  @Test
+  public void fireTorpedo_single_oneBullet_out_of_order() {
+    //Arrange
+    ship.setWasPrimaryFiredLast(false);
+    when(first.isEmpty()).thenReturn(true);
+    when(second.isEmpty()).thenReturn(false);
+    when(first.fire(1)).thenReturn(false);
+    when(second.fire(1)).thenReturn(true);
+
+    //Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+
+    //Verify
+    verify(first,times(0)).fire(1);
+    verify(second,times(1)).fire(1);
+  }
+
+  @Test
+  public void fireTorpedo_all_oneBullet() {
+    //Arrange
+    when(first.isEmpty()).thenReturn(false);
+    when(second.isEmpty()).thenReturn(true);
+    when(first.fire(1)).thenReturn(true);
+    when(second.fire(1)).thenReturn(false);
+
+    //Act
+    ship.fireTorpedo(FiringMode.ALL);
+
+    //Verify
+    verify(first,times(0)).fire(1);
+    verify(second,times(0)).fire(1);
+  }
+
+  @Test
+  public void fireTorpedo_all_empty() {
+    //Arrange
+    when(first.isEmpty()).thenReturn(true);
+    when(second.isEmpty()).thenReturn(true);
+    when(first.fire(1)).thenReturn(false);
+    when(second.fire(1)).thenReturn(false);
+
+    //Act
+    ship.fireTorpedo(FiringMode.ALL);
+
+    //Verify
+    verify(first,times(0)).fire(1);
+    verify(second,times(0)).fire(1);
+  }
 
 }
